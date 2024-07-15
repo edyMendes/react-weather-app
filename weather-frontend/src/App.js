@@ -3,34 +3,46 @@ import axios from "axios";
 import "./App.css";
 
 const cities = ["Lisboa", "Leiria", "Coimbra", "Porto", "Faro"];
+const FETCH_INTERVAL = 30 * 60 * 1000;
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
-  const [lastUpdated, setLastUpdated] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [unit, setUnit] = useState("metric");
 
   const handleUnitChange = (e) => {
-    setUnit(e.target.value);
+    const newUnit = e.target.value;
+    setUnit(newUnit);
+    fetchWeatherData(newUnit);
+  };
+
+  const fetchWeatherData = async (selectedUnit) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/weather?unit=${selectedUnit}`
+      );
+
+      const formattedData = {};
+      cities.forEach((city) => {
+        formattedData[city] = {
+          temperature: response.data[city].main.temp,
+          temp_min: response.data[city].main.temp_min,
+          temp_max: response.data[city].main.temp_max,
+          weather_main: response.data[city].weather[0].main,
+          weather_description: response.data[city].weather[0].description,
+        };
+      });
+
+      setWeatherData(formattedData);
+      setLastUpdated(Date.now());
+    } catch (error) {
+      console.error("Error fetching data from the API:", error);
+    }
   };
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/weather?unit=${unit}`
-        );
-        console.log("Pedido com a opção: ", unit);
-        console.log("Dados recebidos da API:", response.data);
-        setWeatherData(response.data);
-        setLastUpdated(Date.now());
-      } catch (error) {
-        console.error("Erro ao buscar dados da API:", error);
-      }
-    };
-
-    fetchWeatherData();
-
-    const interval = setInterval(fetchWeatherData, 30 * 60 * 1000);
+    fetchWeatherData(unit);
+    const interval = setInterval(() => fetchWeatherData(unit), FETCH_INTERVAL);
 
     return () => clearInterval(interval);
   }, [unit]);
@@ -38,10 +50,10 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Previsão Meteorológica</h1>
+        <h1>Meteorology</h1>
         <div>
           <label>
-            Unidade:
+            Unit:
             <select value={unit} onChange={handleUnitChange}>
               <option value="standard">Kelvin</option>
               <option value="metric">Celsius</option>
@@ -59,7 +71,7 @@ const App = () => {
             />
           ))}
         </div>
-        <p>Última atualização: {new Date(lastUpdated).toLocaleString()}</p>
+        <p>Last updated: {new Date(lastUpdated).toLocaleString()}</p>
       </header>
     </div>
   );
@@ -72,12 +84,22 @@ const WeatherWidget = ({ city, data, unit }) => {
     <div className="weather-widget">
       <h2>{city}</h2>
       {data ? (
-        <p>
-          Temperatura: {data}
-          {unitSymbol}
-        </p>
+        <div className="weather-details">
+          <div className="temperature">
+            {data.temperature.toFixed(1)}
+            {unitSymbol}
+          </div>
+          <p>
+            Max: {data.temp_max.toFixed(1)}
+            {unitSymbol} / Min: {data.temp_min.toFixed(1)}
+            {unitSymbol}
+          </p>
+          <div className="weather-description">
+            <p>{data.weather_description}</p>
+          </div>
+        </div>
       ) : (
-        <p>Carregando...</p>
+        <p>Loading...</p>
       )}
     </div>
   );
