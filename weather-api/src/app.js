@@ -2,12 +2,17 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const weatherRoutes = require("./routes/weatherRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/weather", weatherRoutes);
+// Authentication Routes
+app.use("api/auth", authRoutes.router);
+
+// Weather Routes (Protected)
+app.use("/api/weather", authRoutes.authenticateToken, weatherRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
