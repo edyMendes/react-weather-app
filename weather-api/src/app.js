@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // Authentication Routes
-app.use("api/auth", authRoutes.router);
+app.use("/api/auth", authRoutes.router);
 
 // Weather Routes (Protected)
 app.use("/api/weather", authRoutes.authenticateToken, weatherRoutes);
