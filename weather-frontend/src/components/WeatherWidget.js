@@ -2,8 +2,13 @@
 import React from "react";
 
 const WeatherWidget = ({ city, data, unit }) => {
-  const unitSymbol =
-    unit === "metric" ? "°C" : unit === "imperial" ? "°F" : "K";
+  const unitSymbols = {
+    metric: "°C",
+    imperial: "°F",
+    standard: "K",
+  };
+
+  const unitSymbol = unitSymbols[unit];
 
   return (
     <div className="weather-widget">
