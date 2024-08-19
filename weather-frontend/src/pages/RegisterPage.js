@@ -44,56 +44,58 @@ const Register = () => {
     };
 
     return (
-        <form className="noselect" onSubmit={handleRegister}>
-            <h2 className="noselect">Register</h2>
-            <div>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    autoFocus
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </div>
-            <div>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <div>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="confirmPassword"
-                    label="Confirm Password"
-                    type="confirmPassword"
-                    id="confirmpassword"
-                    autoComplete="confirm-password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-            </div>
-            <br />
-            <Button type="submit" variant="contained" color="primary" size='large' startIcon={<PersonAddIcon />} disabled={loading}>
-                {loading ? 'Registering...' : 'Register'}
-            </Button>
-            <p className="noselect">Already have an account? <Link to="/login">Login here</Link></p>
-        </form>
+        <div className="LoginPage">
+            <form className="noselect" onSubmit={handleRegister}>
+                <h2 className="noselect">Register</h2>
+                <div>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                        id="confirmpassword"
+                        autoComplete="confirm-password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </div>
+                <br />
+                <Button type="submit" variant="contained" color="primary" size='large' startIcon={<PersonAddIcon />} disabled={loading}>
+                    {loading ? 'Registering...' : 'Register'}
+                </Button>
+                <p className="noselect">Already have an account? <Link to="/login">Login here</Link></p>
+            </form>
+        </div>
     );
 };
 export default Register;

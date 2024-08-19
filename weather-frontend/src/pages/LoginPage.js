@@ -33,46 +33,48 @@ const LoginPage = ({ setToken }) => {
   };
 
   return (
-    <form className="noselect" onSubmit={handleLogin}>
-      <h2 className="noselect">Login</h2>
-      <div>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="username"
-          label="Username"
-          name="username"
-          autoComplete="username"
-          autoFocus
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+    <div className="LoginPage">
+      <form className="noselect" onSubmit={handleLogin}>
+        <h2 className="noselect">Login</h2>
+        <div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <FormControlLabel
+          control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="noselect" />}
+          label="Remember me"
         />
-      </div>
-      <div>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <FormControlLabel
-        control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="noselect"/>}
-        label="Remember me"
-      />
-      <br/>
-      <Button type="submit" variant="contained" color="primary" size='large' startIcon={<LoginIcon />} disabled={loading}>
-        {loading ? 'Logging in...' : 'Login'}
-      </Button>
-      <p className="noselect">Don't have an account? <Link to="/register">Register here</Link></p>
-    </form>
+        <br />
+        <Button type="submit" variant="contained" color="primary" size='large' startIcon={<LoginIcon />} disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Button>
+        <p className="noselect">Don't have an account? <Link to="/register">Register here</Link></p>
+      </form>
+    </div>
   );
 };
 
